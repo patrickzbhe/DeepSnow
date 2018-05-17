@@ -1,4 +1,7 @@
-#Imports
+#Teacher simulator code modified to train our bot
+#Does not work with the finished DeepSnow, this was
+#used in the development process
+
 import time
 from random import *
 import random
@@ -6,8 +9,8 @@ import math
 
 
 #Assign strategy names to variables
-strat1Name = "SlightlySmartSue"
-strat2Name = "Snowballz"
+strat1Name = ""
+strat2Name = "DeepSnow"
 
 #Import the two strategies
 strat1 = __import__(strat1Name)
@@ -215,14 +218,18 @@ def game():
             
     #Once the while-loop stops (by someone winning or cheating, or we reached the round-limit), announce the result   
 
+#these are draw/lose/win
 wl = [0,0,0]
 
 for i in range(10000):
     win, states = game()
     if strat2.training and win == 2:
+        #if we win and are training, then adjust scores 
         for s in states:
             strat2.get_smart(*s)
     wl[win] += 1
+
+#save to the pickle file
 strat2.save_brain()
 print(wl)
 

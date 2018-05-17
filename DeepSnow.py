@@ -1,8 +1,8 @@
+#GROUP: Calder, Patrick, Owen
 import math
 import random
 import pickle
 
-# lives balls ducks
 max_lives = 3
 max_balls = 10
 max_ducks = 5
@@ -11,33 +11,37 @@ moves = ['DUCK','THROW','RELOAD']
 
 brain = []
 
+#True to pick random moves. False to pick the smart ones.
 training = False
 
+#save the brain to the pickle file
 def new_brain():
     l = max_lives + 1
     b = max_balls + 1
     d = max_ducks + 1
     f = open('brain.pickle', 'wb')
     brain = [[[[[[[1,1,1] for t in range(d)] for y in range(b)] for x in range(l)] for z in range(d)] for h in range(b)] for n in range(l)]
-    
     pickle.dump(brain, f)
     f.close()
-    
+
+#get the brain 
 def get_brain():
     global brain
     f = open('brain.pickle', 'rb')
     brain = pickle.load(f)
     f.close()
 
+#save brain
 def save_brain():
     f = open('brain.pickle', 'wb')
     pickle.dump(brain, f)
     f.close()
 
+#increase the score for a move
 def get_smart(l,b,d,l2,b2,d2,move):
-  
     brain[d][b][l][d2][b2][l2][moves.index(move)] += 1
-    
+
+#pick a random move without picking an illegal one
 def random_move(balls,ducks):
     b = moves[:]
     if balls < 1:
@@ -48,6 +52,7 @@ def random_move(balls,ducks):
         b.remove('DUCK')
     return random.choice(b)
 
+#pick a move based on scores, while making sure it isn't illegal
 def smart_move(l,b,d,l2,b2,d2):
     #print(l,b,d,l2,b2,d2)
     #print(brain[d][b][l][d2][b2][l2])
@@ -58,11 +63,11 @@ def smart_move(l,b,d,l2,b2,d2):
         brain[d][b][l][d2][b2][l2][1] = 0
     return moves[stats.index(max(stats))]
 
+#main function
 def getMove( myScore, mySnowballs, myDucksUsed, myMovesSoFar,
              oppScore, oppSnowballs, oppDucksUsed, oppMovesSoFar ):
-    #print(myDucksUsed, mySnowballs, myScore, oppDucksUsed, oppSnowballs, oppScore)
+    #decide to choose random or smart move
     if training == False:
-    
         return smart_move(myDucksUsed, mySnowballs, myScore, oppDucksUsed, oppSnowballs, oppScore)
     else:
         return random_move(mySnowballs, 5-myDucksUsed)
