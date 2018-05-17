@@ -54,8 +54,6 @@ def random_move(balls,ducks):
 
 #pick a move based on scores, while making sure it isn't illegal
 def smart_move(l,b,d,l2,b2,d2):
-    #print(l,b,d,l2,b2,d2)
-    #print(brain[d][b][l][d2][b2][l2])
     stats = brain[d][b][l][d2][b2][l2]
     if (5 - l) < 1:
         brain[d][b][l][d2][b2][l2][0] = 0
